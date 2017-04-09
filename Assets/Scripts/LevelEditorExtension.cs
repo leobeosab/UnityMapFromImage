@@ -38,6 +38,7 @@ public class LevelEditorExtension : EditorWindow
         Repaint();
     }
 
+    //Draw the elements
     void OnGUI()
     {
         level_data = (Texture2D)EditorGUILayout.ObjectField("Load Map", level_data, typeof(Texture2D), false);
@@ -46,6 +47,7 @@ public class LevelEditorExtension : EditorWindow
         {
             GUILayout.Label("Custom Objects");
 
+            //Don't want to read an image 2-3 times a second, wasting CPU cycles
             if (level_items.Count < 1)
                 ReadImage();
 
@@ -56,6 +58,7 @@ public class LevelEditorExtension : EditorWindow
         }
     }
 
+    //Create all of the custom fields
     void GenerateFields()
     {
         for (int i = 0; i < level_items.Count; i++)
@@ -82,8 +85,10 @@ public class LevelEditorExtension : EditorWindow
         colors = null;
     }
 
+    //Add everything to the map
     void InsertObjects()
     {
+        //Make sure not to create multiple levels
         DestroyImmediate(GameObject.Find(parent_name));
 
         GameObject parent = new GameObject(parent_name);
@@ -91,6 +96,7 @@ public class LevelEditorExtension : EditorWindow
         int height = level_data.height;
         int width = level_data.width;
 
+        //Grab the size of a regular object by the renderer bounds
         float tile_size = level_items[0].prefab.GetComponent<Renderer>().bounds.size.x;
 
         for (int y = 0; y < height; y++)
